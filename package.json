@@ -1,0 +1,36 @@
+{
+  "name": "price-to-exchange-rate-update",
+  "version": "1.0.6",
+  "description": "A TypeScript/Node.js module for updating product prices based on exchange rate changes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["exchange rate", "e-commerce", "price update", "nodejs", "typescript", "price-to-exchange-rate-update", "price-to-exchange-rate-update-algorithm", "price-to-exchange-rate-update-algorithm-nodejs", "javascript", "js", "typescript", "ts"],
+  "author": "Daniel Fasiku",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daniel-fasiku/price-to-exchange-rate-update-algorithm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daniel-fasiku/price-to-exchange-rate-update-algorithm/issues"
+  },
+  "homepage": "https://github.com/daniel-fasiku/price-to-exchange-rate-update-algorithm#readme"
+}
