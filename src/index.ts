@@ -1,7 +1,9 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+// Load the .env file from the package's root directory
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 interface Product {
   id: string | number;
@@ -34,11 +36,14 @@ function createExchangeRateUpdater({
   baseCurrency,
   targetCurrency
 }: ExchangeRateUpdaterOptions): () => Promise<UpdateResult> {
-  const effectiveApiKey = apiKey || process.env.API_KEY;
-  if (!apiKey) {
+  const packageApiKey = process.env.API_KEY;
+  const effectiveApiKey = apiKey || packageApiKey;
+
+  if (!effectiveApiKey) {
     console.warn(
-      "WARNING: No API key provided. Using a default key, which may have usage limitations.\n" +
-      "Please obtain your own API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
+      "WARNING: No API key provided and no default key found in the package's .env file.\n" +
+      "Please provide an API key or set one in the package's .env file.\n" +
+      "You can obtain an API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
       "Note: A Pro version account is required to access historical data."
     );
   }

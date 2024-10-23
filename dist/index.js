@@ -4,15 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const axios_1 = __importDefault(require("axios"));
 const dotenv_1 = __importDefault(require("dotenv"));
-
-dotenv_1.default.config();
-
+const path_1 = __importDefault(require("path"));
+// Load the .env file from the package's root directory
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
 function createExchangeRateUpdater({ fetchProducts, updateProduct, apiKey, baseCurrency, targetCurrency }) {
-    // Add this block for the warning and default API key
-    const effectiveApiKey = apiKey || process.env.API_KEY;
-    if (!apiKey) {
-        console.warn("WARNING: No API key provided. Using a default key, which may have usage limitations.\n" +
-            "Please obtain your own API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
+    const packageApiKey = process.env.API_KEY;
+    const effectiveApiKey = apiKey || packageApiKey;
+    if (!effectiveApiKey) {
+        console.warn("WARNING: No API key provided and no default key found in the package's .env file.\n" +
+            "Please provide an API key or set one in the package's .env file.\n" +
+            "You can obtain an API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
             "Note: A Pro version account is required to access historical data.");
     }
     async function fetchExchangeRate(date) {
