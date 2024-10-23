@@ -3,9 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const axios_1 = __importDefault(require("axios"));
+const dotenv_1 = __importDefault(require("dotenv"));
+
+dotenv_1.default.config();
+
 function createExchangeRateUpdater({ fetchProducts, updateProduct, apiKey, baseCurrency, targetCurrency }) {
     // Add this block for the warning and default API key
-    const effectiveApiKey = apiKey || 'c6371980480236e19fd6e145';
+    const effectiveApiKey = apiKey || process.env.API_KEY;
     if (!apiKey) {
         console.warn("WARNING: No API key provided. Using a default key, which may have usage limitations.\n" +
             "Please obtain your own API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +

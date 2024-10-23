@@ -1,4 +1,7 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface Product {
   id: string | number;
@@ -31,8 +34,7 @@ function createExchangeRateUpdater({
   baseCurrency,
   targetCurrency
 }: ExchangeRateUpdaterOptions): () => Promise<UpdateResult> {
-  // Add this block for the warning and default API key
-  const effectiveApiKey = apiKey || 'c6371980480236e19fd6e145';
+  const effectiveApiKey = apiKey || process.env.API_KEY;
   if (!apiKey) {
     console.warn(
       "WARNING: No API key provided. Using a default key, which may have usage limitations.\n" +
