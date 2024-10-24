@@ -10,8 +10,8 @@ const updatePrices = createExchangeRateUpdater({
     console.log(`Updating product ${id}:`, data);
   },
   // Make sure to set this in your environment
-  baseCurrency: 'USD',
-  targetCurrency: 'EUR'
+  baseCurrency: 'NGN',
+  targetCurrency: 'USD'
 });
 
 updatePrices().then(console.log).catch(console.error);

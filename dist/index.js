@@ -3,17 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const axios_1 = __importDefault(require("axios"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
-// Load the .env file from the package's root directory
-dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../.env') });
 function createExchangeRateUpdater({ fetchProducts, updateProduct, apiKey, baseCurrency, targetCurrency }) {
-    const packageApiKey = process.env.API_KEY;
-    const effectiveApiKey = apiKey || packageApiKey;
-    if (!effectiveApiKey) {
-        console.warn("WARNING: No API key provided and no default key found in the package's .env file.\n" +
-            "Please provide an API key or set one in the package's .env file.\n" +
-            "You can obtain an API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
+    // Add this block for the warning and default API key
+    const effectiveApiKey = apiKey || 'c6371980480236e19fd6e145';
+    if (!apiKey) {
+        console.warn("WARNING: No API key provided. Using a default key, which may have usage limitations.\n" +
+            "Please obtain your own API key from the Exchange Rate API service provider (https://www.exchangerate-api.com/).\n" +
             "Note: A Pro version account is required to access historical data.");
     }
     async function fetchExchangeRate(date) {
@@ -38,10 +33,14 @@ function createExchangeRateUpdater({ fetchProducts, updateProduct, apiKey, baseC
                 for (const product of products) {
                     const newOriginalPrice = Math.round(product.originalPrice * ratio);
                     const newDiscountPrice = product.discountPrice ? Math.round(product.discountPrice * ratio) : null;
-                    await updateProduct(product.id, {
-                        originalPrice: newOriginalPrice,
-                        discountPrice: newDiscountPrice
-                    });
+                    try {
+                        await updateProduct(product.id, {
+                            originalPrice: newOriginalPrice,
+                            discountPrice: newDiscountPrice
+                        });
+                    } catch (error) {
+                        console.error(`Error updating product ${product.id}: ${error instanceof Error ? error.message : String(error)}`);
+                    }
                 }
                 return {
                     success: true,
