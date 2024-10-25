@@ -27,20 +27,16 @@ function createExchangeRateUpdater({ fetchProducts, updateProduct, apiKey, baseC
                 fetchExchangeRate(today),
                 fetchExchangeRate(yesterday)
             ]);
-            const ratio = newRate / oldRate;
+            const ratio = newRate < oldRate ? oldRate / newRate : newRate / oldRate;
             if (ratio !== 1) {
                 const products = await fetchProducts();
                 for (const product of products) {
                     const newOriginalPrice = Math.round(product.originalPrice * ratio);
                     const newDiscountPrice = product.discountPrice ? Math.round(product.discountPrice * ratio) : null;
-                    try {
-                        await updateProduct(product.id, {
-                            originalPrice: newOriginalPrice,
-                            discountPrice: newDiscountPrice
-                        });
-                    } catch (error) {
-                        console.error(`Error updating product ${product.id}: ${error instanceof Error ? error.message : String(error)}`);
-                    }
+                    await updateProduct(product.id, {
+                        originalPrice: newOriginalPrice,
+                        discountPrice: newDiscountPrice
+                    });
                 }
                 return {
                     success: true,
