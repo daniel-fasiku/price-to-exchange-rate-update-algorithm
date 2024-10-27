@@ -66,8 +66,8 @@ function createExchangeRateUpdater({
         const products = await fetchProducts();
 
         for (const product of products) {
-          const newOriginalPrice = Math.round(product.originalPrice * ratio);
-          const newDiscountPrice = product.discountPrice ? Math.round(product.discountPrice * ratio) : null;
+          const newOriginalPrice = newRate < oldRate ? Math.round(product.originalPrice * ratio) : Math.round(product.originalPrice / ratio);
+          const newDiscountPrice = product.discountPrice ? newRate < oldRate ? Math.round(product.discountPrice * ratio) : Math.round(product.discountPrice / ratio) : null;
 
           await updateProduct(product.id, {
             originalPrice: newOriginalPrice,
