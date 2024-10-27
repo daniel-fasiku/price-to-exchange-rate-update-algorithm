@@ -60,7 +60,7 @@ function createExchangeRateUpdater({
         fetchExchangeRate(yesterday)
       ]);
 
-      const ratio = newRate / oldRate;
+      const ratio = newRate < oldRate ? oldRate / newRate : newRate / oldRate;
 
       if (ratio !== 1) {
         const products = await fetchProducts();
